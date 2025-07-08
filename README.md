@@ -1,12 +1,12 @@
 # Docker Demo Web App
 
-A simple Node.js web application to demonstrate Docker Cloud functionality.
+A simple Node.js web application to demonstrate Docker Offload functionality.
 
 ## Quick Start 
 
 ### Prerequisites
 - Docker Desktop 4.43+
-- Docker subscription and setup
+- Docker Offload subscription and setup
 
 ### Step 1: Start Docker Offload
 ```bash
