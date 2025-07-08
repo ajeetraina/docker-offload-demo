@@ -6,7 +6,7 @@ A simple Node.js web application to demonstrate Docker Cloud functionality.
 
 ### Prerequisites
 - Docker Desktop 4.43+
-- Docker Offload subscription and setup
+- Docker subscription and setup
 
 ### Step 1: Start Docker Offload
 ```bash
