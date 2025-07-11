@@ -27,7 +27,7 @@ Open your browser: **http://localhost:3000**
 ## 📊 What You'll See
 
 The enhanced interface shows:
-- ✅ **Bold Status Cards**: Docker Offload and GPU status with clear indicators
+- ✅ **Bold Status Cards**: Docker Offload and GPU status 
 - 🖥️ **System Information**: Hostname, platform, architecture details
 - ⚡ **Resource Metrics**: CPU cores, memory usage with progress bars
 - 🎮 **GPU Details**: Name, memory, temperature, utilization
@@ -47,6 +47,4 @@ npm install
 npm start
 ```
 
----
 
-**Enhanced with ❤️ for the Docker community**
