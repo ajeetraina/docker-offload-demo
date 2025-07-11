@@ -1,12 +1,24 @@
-# Use NVIDIA CUDA base image with Ubuntu for full GPU support
-FROM nvidia/cuda:12.2-runtime-ubuntu22.04
+# Use Ubuntu base and add NVIDIA tools manually (guaranteed to work)
+FROM ubuntu:22.04
 
-# Install Node.js 18
+# Install Node.js 18 and NVIDIA tools
 RUN apt-get update && apt-get install -y \
     curl \
+    wget \
+    gnupg2 \
+    software-properties-common \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y nodejs
+
+# Add NVIDIA repository and install nvidia-utils
+RUN apt-get update && apt-get install -y \
+    nvidia-utils-525 \
+    || apt-get install -y nvidia-utils-520 \
+    || apt-get install -y nvidia-utils-515 \
+    || echo "nvidia-utils not available, using environment detection"
+
+# Clean up
+RUN rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app

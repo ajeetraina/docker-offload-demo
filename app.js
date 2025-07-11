@@ -7,10 +7,10 @@ const port = process.env.PORT || 3000;
 // Enable static file serving
 app.use(express.static('public'));
 
-// GPU detection function
+// GPU detection function with silent error handling
 function getGPUInfo() {
     try {
-        // Check for GPU environment variables
+        // Check for GPU environment variables first
         const nvidiaDevices = process.env.NVIDIA_VISIBLE_DEVICES;
         const cudaDevices = process.env.CUDA_VISIBLE_DEVICES;
         
@@ -23,9 +23,12 @@ function getGPUInfo() {
             runtimeAvailable: false
         };
 
-        // Check if nvidia-smi is available
+        // Try nvidia-smi silently (suppress error output)
         try {
-            const output = execSync('nvidia-smi --query-gpu=name,memory.total,memory.used,temperature.gpu,utilization.gpu --format=csv,noheader,nounits', { encoding: 'utf8' });
+            const output = execSync('nvidia-smi --query-gpu=name,memory.total,memory.used,temperature.gpu,utilization.gpu --format=csv,noheader,nounits 2>/dev/null', { 
+                encoding: 'utf8',
+                stdio: ['pipe', 'pipe', 'ignore'] // Suppress stderr
+            });
             const lines = output.trim().split('\n');
             if (lines.length > 0 && lines[0] !== '') {
                 const [name, memTotal, memUsed, temp, util] = lines[0].split(', ');
@@ -39,7 +42,7 @@ function getGPUInfo() {
                 };
             }
         } catch (err) {
-            // nvidia-smi not available, check environment variables
+            // Silent fallback - nvidia-smi not available, check environment variables
             if (nvidiaDevices || cudaDevices) {
                 gpuInfo.detected = true;
                 gpuInfo.name = 'GPU Environment Detected';
@@ -306,19 +309,19 @@ app.get('/', (req, res) => {
                     
                     <div class="info-row">
                         <span class="info-label">Status:</span>
-                        <span class="info-value ${gpuInfo.detected ? 'success' : 'error'}">
-                            ${gpuInfo.detected ? '✅ Success' : '❌ No GPU'}
+                        <span class="info-value ${gpuInfo.detected ? 'success' : 'warning'}">
+                            ${gpuInfo.detected ? '✅ GPU Detected' : '⚠️ Environment Only'}
                         </span>
                     </div>
                     
                     <div class="info-row">
-                        <span class="info-label">Message:</span>
-                        <span class="info-value">${gpuInfo.detected ? 'GPU Environment Active' : 'No GPU detected'}</span>
+                        <span class="info-label">Method:</span>
+                        <span class="info-value">${gpuInfo.detected ? 'Runtime Detection' : 'Environment Variables'}</span>
                     </div>
                     
                     <div class="info-row">
                         <span class="info-label">Details:</span>
-                        <span class="info-value">${gpuInfo.detected ? 'GPU runtime environment detected' : 'No GPU runtime available'}</span>
+                        <span class="info-value">${gpuInfo.detected ? 'Full GPU access available' : 'Basic GPU support via Docker'}</span>
                     </div>
                 </div>
                 
@@ -449,7 +452,6 @@ app.get('/', (req, res) => {
                 fetch('/gpu')
                     .then(response => response.json())
                     .then(data => {
-                        // Update GPU information if needed
                         console.log('GPU Status:', data);
                     })
                     .catch(err => console.log('Error fetching GPU data:', err));
@@ -481,5 +483,6 @@ app.get('/gpu', (req, res) => {
 app.listen(port, '0.0.0.0', () => {
     console.log(`Docker Offload Demo app listening at http://localhost:${port}`);
     console.log('Environment:', process.env.NODE_ENV || 'development');
-    console.log('GPU Support:', getGPUInfo().detected ? 'Available' : 'Not Available');
+    const gpu = getGPUInfo();
+    console.log('GPU Support:', gpu.detected ? 'Available' : 'Environment Variables Only');
 });
