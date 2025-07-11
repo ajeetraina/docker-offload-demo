@@ -1,19 +1,38 @@
 {
   "name": "docker-offload-demo",
-  "version": "1.0.0",
-  "description": "Simple web app demo for Docker Offload",
+  "version": "2.0.0",
+  "description": "Enhanced Docker Offload Demo with GPU support and professional UI",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["docker", "offload", "demo", "web-app"],
-  "author": "Docker Offload Demo",
+  "keywords": [
+    "docker",
+    "offload",
+    "gpu",
+    "nvidia",
+    "cloud",
+    "demo"
+  ],
+  "author": "Docker Community",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajeetraina/docker-offload-demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ajeetraina/docker-offload-demo/issues"
+  },
+  "homepage": "https://github.com/ajeetraina/docker-offload-demo#readme"
 }
