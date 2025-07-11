@@ -1,5 +1,8 @@
 # Docker Offload Demo - Enhanced UI 🚀
 
+<img width="1268" height="950" alt="image" src="https://github.com/user-attachments/assets/9f3f62f8-7638-4037-b880-987ce325bf92" />
+
+
 A Node.js web application demonstrating Docker Offload functionality with GPU support and a **bold, professional user interface**.
 
 ## ✨ Enhanced Features
