@@ -9,7 +9,7 @@ A Node.js web application demonstrating Docker Offload functionality with GPU su
 ## Prerequisite
 
 - Install Docker Desktop
-- Enable Docker Offload
+- Enable Docker Offload with GPU
 
 ```
 docker offload start
